@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蛤蟆的心灵归途 · 三渲二动画短片 | 作品展示</title>
+<meta name="description" content="基于 Blender 的三渲二动画短片《蛤蟆的心灵归途》——一部关于心理健康与自我接纳的治愈系动画。">
+<link rel="icon" href="assets/characters/toad/1.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green-950:#152b1d; --green-900:#1f3d2b; --green-800:#275036; --green-700:#2d5a3d;
+  --green-500:#4a7c59; --green-300:#8fb996; --green-100:#d7e4d8; --green-50:#ecf3ec;
+  --cream:#eef3e6; --paper:#fbfdf7; --sand:#e4ecd8;
+  --yellow:#f2b950; --yellow-deep:#d99a2b; --yellow-light:#fce8c2;
+  --purple:#8b7fa8; --purple-light:#e6e1f0;
+  --orange:#e8875a; --blue:#7ba7c9;
+  --ink:#252e22; --ink-soft:#5f6d58; --line:#d8e2ce;
+  --radius:22px; --radius-lg:30px;
+  --shadow-sm:0 2px 10px rgba(43,35,32,.07);
+  --shadow-md:0 8px 28px rgba(43,35,32,.12);
+  --shadow-lg:0 18px 60px rgba(31,61,43,.18);
+  --font-title:'ZCOOL KuaiLe','Noto Serif SC','KaiTi','Microsoft YaHei',sans-serif;
+  --font-body:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);line-height:1.75;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--yellow-light)}
+
+/* ---------- 通用 ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{position:relative}
+.sec-head{text-align:center;margin-bottom:52px}
+.sec-kicker{display:inline-flex;align-items:center;gap:8px;font-size:14px;letter-spacing:4px;color:var(--green-700);background:var(--green-50);border:1.5px solid var(--green-100);padding:6px 18px;border-radius:999px;font-weight:700}
+.sec-title{font-family:var(--font-title);font-size:clamp(30px,4.5vw,46px);color:var(--green-900);margin-top:18px;letter-spacing:2px}
+.sec-title em{font-style:normal;color:var(--yellow-deep)}
+.sec-sub{color:var(--ink-soft);max-width:640px;margin:12px auto 0;font-size:15.5px}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.22,.8,.32,1),transform .8s cubic-bezier(.22,.8,.32,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* 波浪分隔 */
+.wave{display:block;width:100%;height:60px;margin-bottom:-1px}
+
+/* ---------- 导航 ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s;padding:16px 0}
+nav .nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+nav.scrolled{background:rgba(241,246,233,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow-sm);padding:10px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-title);font-size:20px;color:var(--green-900);letter-spacing:1px}
+.brand img{width:38px;height:38px;object-fit:contain;transform:rotate(-6deg);transition:.4s}
+.brand:hover img{transform:rotate(8deg) scale(1.12)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 14px;border-radius:999px;font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:.25s;position:relative}
+.nav-links a:hover{color:var(--green-800);background:var(--green-50)}
+.nav-links a.active{color:#fff;background:var(--green-700);box-shadow:0 4px 14px rgba(45,90,61,.35)}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.nav-toggle svg{width:26px;height:26px;stroke:var(--green-900)}
+
+/* ---------- Hero ---------- */
+#hero{min-height:100svh;display:flex;align-items:center;padding:120px 0 40px;overflow:hidden;
+  background:
+    radial-gradient(1000px 520px at 85% 10%, rgba(242,185,80,.16), transparent 60%),
+    radial-gradient(900px 560px at 6% 90%, rgba(74,124,89,.22), transparent 62%),
+    radial-gradient(700px 420px at 78% 92%, rgba(143,185,150,.25), transparent 60%),
+    linear-gradient(180deg,#f4f8ec 0%,var(--cream) 100%);}
+#hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;width:100%}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.hero-badges span{font-size:13px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:999px;border:1.5px solid}
+.badge-green{color:var(--green-700);border-color:var(--green-300);background:rgba(238,245,238,.8)}
+.badge-yellow{color:var(--yellow-deep);border-color:#eec981;background:rgba(252,232,194,.75)}
+.badge-purple{color:var(--purple);border-color:#c8bfdd;background:rgba(230,225,240,.75)}
+.hero-title{font-family:var(--font-title);font-size:clamp(46px,7.2vw,86px);line-height:1.12;color:var(--green-950);letter-spacing:4px}
+.hero-title .hl{position:relative;display:inline-block;color:var(--green-700)}
+.hero-title .hl::after{content:"";position:absolute;left:-2%;right:-2%;bottom:6%;height:.32em;background:var(--yellow-light);z-index:-1;border-radius:6px;transform:rotate(-1.2deg)}
+.hero-en{margin-top:14px;font-size:15px;letter-spacing:5px;color:var(--green-500);text-transform:uppercase;font-weight:500}
+.hero-desc{margin-top:22px;font-size:16.5px;color:var(--ink-soft);max-width:540px}
+.hero-desc b{color:var(--green-800)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px}
+.hero-meta .m b{display:block;font-family:var(--font-title);font-size:26px;color:var(--green-800)}
+.hero-meta .m span{font-size:12.5px;color:var(--ink-soft);letter-spacing:1px}
+.hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;border-radius:999px;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:.3s;letter-spacing:1px}
+.btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500));color:#fff;box-shadow:0 10px 26px rgba(45,90,61,.4)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(45,90,61,.48)}
+.btn-ghost{background:rgba(255,253,247,.8);color:var(--green-800);border:2px solid var(--green-300)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--green-500);background:#fff}
+.hero-stage{position:relative;height:520px}
+.hero-sticker{position:absolute;filter:drop-shadow(0 18px 30px rgba(31,61,43,.22));animation:float 5s ease-in-out infinite}
+.hero-sticker.main{width:400px;left:50%;top:50%;transform:translate(-50%,-52%);z-index:2;animation-name:floatBig}
+.hero-sticker.badger{width:150px;right:0;bottom:30px;z-index:1;animation-delay:.8s;transform:rotate(6deg)}
+.hero-sticker.leaf{width:90px;left:6%;top:4%;opacity:.9;animation-delay:1.6s}
+.hero-sticker.leaf2{width:70px;right:10%;top:0;opacity:.85;animation-delay:2.2s}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@keyframes floatBig{0%,100%{transform:translate(-50%,-52%)}50%{transform:translate(-50%,-56%)}}
+.scroll-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:var(--green-500);font-size:12px;letter-spacing:3px;text-align:center;animation:bob 2s infinite}
+.scroll-hint::after{content:"";display:block;width:2px;height:34px;margin:8px auto 0;background:linear-gradient(var(--green-500),transparent)}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ---------- 影片 ---------- */
+#film{background:linear-gradient(180deg,var(--green-950),var(--green-900));padding:90px 0 110px;color:#eef5ee}
+#film .sec-kicker{color:#cfe3d2;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+#film .sec-title{color:#f6faf3}
+#film .sec-sub{color:#b9cdbd}
+.video-shell{max-width:960px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);border:6px solid rgba(255,255,255,.08);position:relative;background:#000}
+.video-shell video{width:100%;aspect-ratio:16/9;display:block}
+.video-shell iframe{width:100%;aspect-ratio:16/9;display:block;border:0}
+.bili-tip{text-align:center;margin-top:16px;font-size:14px;color:#b9cdbd}
+.bili-tip a{color:var(--yellow);text-decoration:underline;text-underline-offset:3px}
+.video-shell .play-cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(15,25,18,.25);transition:.35s;flex-direction:column;gap:16px}
+.video-shell .play-cover:hover{background:rgba(15,25,18,.42)}
+.play-btn{width:92px;height:92px;border-radius:50%;background:rgba(250,245,234,.95);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 40px rgba(0,0,0,.4);transition:.3s}
+.play-btn svg{width:34px;height:34px;fill:var(--green-800);margin-left:6px}
+.video-shell .play-cover:hover .play-btn{transform:scale(1.1);background:var(--yellow)}
+.video-shell .play-cover p{color:#f6faf3;font-family:var(--font-title);font-size:20px;letter-spacing:3px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.film-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:960px;margin:34px auto 0}
+.fstat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:20px 12px;text-align:center;backdrop-filter:blur(6px)}
+.fstat b{display:block;font-family:var(--font-title);font-size:24px;color:var(--yellow)}
+.fstat span{font-size:12.5px;color:#b9cdbd;letter-spacing:2px}
+
+/* ---------- 故事四幕 ---------- */
+#story{padding:100px 0 80px}
+.story-intro{max-width:760px;margin:0 auto 46px;text-align:center;font-size:16px;color:var(--ink-soft)}
+.story-intro b{color:var(--green-800)}
+.acts{display:grid;grid-template-columns:300px 1fr;gap:30px;align-items:stretch}
+.act-tabs{display:flex;flex-direction:column;gap:12px}
+.act-tab{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--paper);border:2px solid var(--line);border-radius:18px;cursor:pointer;transition:.3s;text-align:left}
+.act-tab .num{flex:none;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:20px;background:var(--sand);color:var(--ink-soft);transition:.3s}
+.act-tab .t b{display:block;font-size:16.5px;font-family:var(--font-title);letter-spacing:1px;color:var(--green-950)}
+.act-tab .t span{font-size:12.5px;color:var(--ink-soft)}
+.act-tab:hover{border-color:var(--green-300);transform:translateX(4px)}
+.act-tab.active{border-color:var(--green-500);background:linear-gradient(135deg,#fff,var(--green-50));box-shadow:var(--shadow-md)}
+.act-tab.active .num{background:var(--green-700);color:#fff}
+.act-panel{background:var(--paper);border-radius:var(--radius-lg);border:2px solid var(--line);overflow:hidden;box-shadow:var(--shadow-sm);display:grid;grid-template-rows:auto 1fr;min-height:480px}
+.act-media{position:relative;height:280px;overflow:hidden}
+.act-media img{width:100%;height:100%;object-fit:cover;transition:transform 6s ease}
+.act-panel.active .act-media img{transform:scale(1.06)}
+.act-tone{position:absolute;top:16px;right:16px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;backdrop-filter:blur(4px);box-shadow:var(--shadow-sm)}
+.act-body{padding:28px 32px 30px}
+.act-body h3{font-family:var(--font-title);font-size:26px;color:var(--green-900);letter-spacing:2px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.act-body h3 small{font-size:13px;font-weight:400;color:var(--ink-soft);letter-spacing:1px}
+.act-body p{margin-top:14px;color:var(--ink-soft);font-size:15.3px}
+.act-psy{margin-top:18px;display:flex;gap:10px;align-items:flex-start;background:var(--yellow-light);border-radius:14px;padding:13px 16px;font-size:14px;color:#7a5a17}
+.act-psy b{flex:none;color:#5d4409}
+.act-progress{grid-column:1/-1;height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin:0 32px 22px}
+.act-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-500),var(--yellow));border-radius:99px}
+
+/* ---------- 角色 ---------- */
+#characters{padding:80px 0 100px;background:linear-gradient(180deg,var(--cream),#e2ecda)}
+.char-tabs{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:40px}
+.char-tab{display:flex;align-items:center;gap:10px;padding:10px 22px 10px 12px;border-radius:999px;border:2px solid var(--line);background:var(--paper);cursor:pointer;transition:.3s;font-weight:700;font-size:15px;color:var(--ink-soft)}
+.char-tab img{width:40px;height:40px;object-fit:contain}
+.char-tab:hover{transform:translateY(-3px);border-color:var(--green-300)}
+.char-tab.active{border-color:var(--green-600,var(--green-500));background:var(--green-700);color:#fff;box-shadow:0 10px 24px rgba(45,90,61,.35)}
+.char-stage-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+.char-stage{border-radius:var(--radius-lg);background:
+  radial-gradient(circle at 22% 18%,rgba(255,255,255,.9),transparent 45%),
+  repeating-conic-gradient(var(--green-50) 0 25deg,#fff 25deg 50deg);
+  border:2px solid var(--line);display:flex;align-items:center;justify-content:center;padding:30px;min-height:460px;position:relative;overflow:hidden}
+.char-stage .big{max-height:400px;max-width:86%;object-fit:contain;filter:drop-shadow(0 20px 34px rgba(31,61,43,.25));animation:pop .5s cubic-bezier(.34,1.56,.64,1);cursor:zoom-in}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.char-stage .hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);letter-spacing:2px}
+.sticker-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.sticker-row button{width:72px;height:72px;border-radius:16px;border:2px solid var(--line);background:var(--paper);cursor:pointer;padding:8px;transition:.25s}
+.sticker-row button img{width:100%;height:100%;object-fit:contain}
+.sticker-row button:hover{transform:translateY(-4px) rotate(-3deg);border-color:var(--green-300)}
+.sticker-row button.active{border-color:var(--yellow-deep);background:var(--yellow-light)}
+.char-card{background:var(--paper);border:2px solid var(--line);border-radius:var(--radius-lg);padding:34px 36px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.char-card .role{font-size:13px;letter-spacing:3px;color:var(--green-500);font-weight:700}
+.char-card h3{font-family:var(--font-title);font-size:44px;color:var(--green-950);letter-spacing:3px;margin-top:4px}
+.char-card .en{font-size:13px;color:var(--ink-soft);letter-spacing:4px;text-transform:uppercase;margin-top:2px}
+.char-tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.char-tags span{font-size:13px;padding:5px 14px;border-radius:999px;font-weight:600}
+.tag-g{background:var(--green-100);color:var(--green-800)}
+.tag-y{background:var(--yellow-light);color:#8a6410}
+.tag-p{background:var(--purple-light);color:#5d5180}
+.char-card p{margin-top:18px;color:var(--ink-soft);font-size:15.2px}
+.char-card .quote{margin-top:auto;padding-top:22px}
+.char-card .quote b{display:block;font-size:12.5px;color:var(--green-500);letter-spacing:2px;margin-bottom:6px}
+.char-card .quote i{display:block;font-family:var(--font-title);font-size:19px;color:var(--green-800);font-style:normal;letter-spacing:1px}
+.sheet-cta{margin-top:36px;text-align:center}
+.sheet-cta .btn-ghost{font-size:14.5px;padding:11px 24px}
+
+/* ---------- 场景 ---------- */
+#scenes{padding:100px 0}
+.scene-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+.scene-card{border-radius:var(--radius-lg);overflow:hidden;position:relative;cursor:zoom-in;box-shadow:var(--shadow-sm);border:2px solid var(--line);background:var(--paper);transition:.35s}
+.scene-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+.scene-card .ph{overflow:hidden;height:300px}
+.scene-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+.scene-card:hover img{transform:scale(1.07)}
+.scene-info{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.scene-info h4{font-family:var(--font-title);font-size:21px;letter-spacing:1.5px;color:var(--green-950)}
+.scene-info p{font-size:13.5px;color:var(--ink-soft);margin-top:3px}
+.tone-chip{flex:none;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:999px;color:#fff}
+.tone-cold{background:linear-gradient(135deg,#7d6f9e,#a99ec4)}
+.tone-warm{background:linear-gradient(135deg,#d99a2b,#f2c96b)}
+.tone-mid{background:linear-gradient(135deg,#5f8aa8,#93b8cf)}
+.tone-bright{background:linear-gradient(135deg,#e8875a,#f2b17a)}
+
+/* ---------- 分镜 ---------- */
+#storyboard{padding:0 0 100px}
+.sb-scroll{display:flex;gap:22px;overflow-x:auto;padding:8px 24px 26px;scroll-snap-type:x mandatory;cursor:grab;scrollbar-width:thin;scrollbar-color:var(--green-300) transparent}
+.sb-scroll.dragging{cursor:grabbing;scroll-snap-type:none}
+.sb-card{flex:none;width:320px;max-width:82vw;scroll-snap-align:center;border-radius:var(--radius);overflow:hidden;border:2px solid var(--line);background:var(--paper);box-shadow:var(--shadow-sm);cursor:zoom-in;transition:.3s}
+.sb-card:hover{box-shadow:var(--shadow-md);border-color:var(--green-300)}
+.sb-card img{width:100%;height:250px;object-fit:contain;background:var(--paper);padding:6px 0}
+.sb-card .cap{padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.sb-card .cap b{font-family:var(--font-title);font-size:17px;color:var(--green-900);letter-spacing:1px}
+.sb-card .cap span{font-size:12.5px;color:var(--ink-soft)}
+.sb-hint{text-align:center;font-size:13px;color:var(--ink-soft);letter-spacing:2px}
+
+/* ---------- 制作历程 ---------- */
+#process{padding:100px 0;background:linear-gradient(180deg,#e4ecda,var(--cream))}
+.timeline{position:relative;max-width:880px;margin:0 auto;padding-left:54px}
+.timeline::before{content:"";position:absolute;left:20px;top:8px;bottom:8px;width:3px;border-radius:3px;background:linear-gradient(var(--green-300),var(--yellow))}
+.step{position:relative;margin-bottom:44px;background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow-sm);transition:.4s;opacity:.55;transform:translateY(20px)}
+.step.in{opacity:1;transform:none;border-color:var(--green-100)}
+.step:hover{border-color:var(--green-300)}
+.step::before{content:"";position:absolute;left:-46px;top:30px;width:18px;height:18px;border-radius:50%;background:var(--paper);border:4px solid var(--green-300);transition:.4s;z-index:1}
+.step.in::before{border-color:var(--green-700);box-shadow:0 0 0 6px rgba(74,124,89,.15)}
+.step-head{display:flex;align-items:center;gap:14px}
+.step-num{flex:none;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--green-700),var(--green-500));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:20px;box-shadow:0 6px 16px rgba(45,90,61,.3)}
+.step-head h3{font-family:var(--font-title);font-size:22px;letter-spacing:1.5px;color:var(--green-950)}
+.step-head small{display:block;font-size:12px;color:var(--ink-soft);letter-spacing:2px;font-weight:400}
+.step p{margin-top:12px;color:var(--ink-soft);font-size:15px}
+.step-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
+.step-gallery figure{border-radius:14px;overflow:hidden;border:1.5px solid var(--line);cursor:zoom-in;background:var(--sand);position:relative;transition:.3s}
+.step-gallery figure:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.step-gallery img{width:100%;height:118px;object-fit:cover}
+.step-gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 10px 6px;font-size:11.5px;color:#fff;background:linear-gradient(transparent,rgba(21,43,29,.82));letter-spacing:.5px}
+
+/* ---------- 技术特色 ---------- */
+#tech{padding:100px 0}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.tech-card{border-radius:var(--radius-lg);padding:36px 30px;border:2px solid var(--line);background:var(--paper);box-shadow:var(--shadow-sm);transition:.35s;position:relative;overflow:hidden}
+.tech-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+.tech-card .ic{width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:20px}
+.tech-card:nth-child(1) .ic{background:var(--green-100)}
+.tech-card:nth-child(2) .ic{background:var(--yellow-light)}
+.tech-card:nth-child(3) .ic{background:var(--purple-light)}
+.tech-card h3{font-family:var(--font-title);font-size:23px;letter-spacing:1.5px;color:var(--green-950)}
+.tech-card .tag{display:inline-block;font-size:12px;font-weight:700;color:var(--green-700);background:var(--green-50);border:1px solid var(--green-100);padding:3px 12px;border-radius:99px;margin:10px 0 12px}
+.tech-card p{font-size:14.5px;color:var(--ink-soft)}
+.tech-card .deco{position:absolute;right:-24px;bottom:-24px;font-size:110px;opacity:.07;transform:rotate(-12deg)}
+
+/* ---------- 关于 ---------- */
+#about{padding:90px 0 110px;background:linear-gradient(180deg,var(--green-950) 0%,var(--green-900));color:#dfe9df}
+#about .sec-kicker{color:#cfe3d2;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+#about .sec-title{color:#fdf9ef}
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:stretch}
+.about-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg);padding:34px 36px;backdrop-filter:blur(8px)}
+.about-card h3{font-family:var(--font-title);font-size:24px;letter-spacing:2px;color:var(--yellow);margin-bottom:16px}
+.about-card p{font-size:14.8px;color:#c4d5c7}
+.about-rows{margin-top:14px}
+.about-rows div{display:flex;gap:14px;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.14);font-size:14.5px}
+.about-rows div:last-child{border-bottom:none}
+.about-rows b{flex:none;width:88px;color:#9fc0a6;font-weight:600}
+.about-rows span{color:#eaf2ea}
+.about-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px}
+.astat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:22px 10px;text-align:center}
+.astat b{display:block;font-family:var(--font-title);font-size:30px;color:var(--yellow)}
+.astat span{font-size:12px;color:#a9c2ae;letter-spacing:2px}
+.about-links{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
+.btn-light{background:rgba(255,255,255,.1);color:#fdf9ef;border:1.5px solid rgba(255,255,255,.3)}
+.btn-light:hover{background:var(--yellow);color:var(--green-950);border-color:var(--yellow)}
+
+/* ---------- 页脚 ---------- */
+footer{background:var(--green-950);color:#8fa893;text-align:center;padding:30px 20px;font-size:13px;letter-spacing:1px;border-top:1px solid rgba(255,255,255,.08)}
+footer b{color:#cfe3d2}
+
+/* ---------- 灯箱 ---------- */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(15,25,18,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:40px}
+.lightbox.open{display:flex;animation:fadein .3s}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.lightbox img{max-width:92vw;max-height:80vh;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.6);animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+.lightbox .lb-cap{margin-top:16px;color:#e5efe6;font-size:14px;letter-spacing:1px}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:none;background:rgba(255,253,247,.14);color:#fff;font-size:22px;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center}
+.lb-btn:hover{background:var(--yellow);color:var(--green-950)}
+.lb-prev{left:26px}.lb-next{right:26px}
+.lb-close{position:absolute;top:22px;right:26px;width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,253,247,.14);color:#fff;font-size:19px;cursor:pointer;transition:.25s}
+.lb-close:hover{background:#c96b5a;transform:rotate(90deg)}
+
+/* ---------- 返回顶部 ---------- */
+#toTop{position:fixed;right:26px;bottom:26px;width:52px;height:52px;border-radius:50%;border:none;background:var(--green-700);color:#fff;font-size:20px;cursor:pointer;opacity:0;pointer-events:none;transition:.35s;box-shadow:var(--shadow-md);z-index:90}
+#toTop.show{opacity:1;pointer-events:auto}
+#toTop:hover{background:var(--yellow);color:var(--green-950);transform:translateY(-4px)}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:960px){
+  #hero .wrap{grid-template-columns:1fr;text-align:center}
+  .hero-badges,.hero-meta,.hero-cta{justify-content:center}
+  .hero-stage{height:380px;order:-1}
+  .hero-sticker.main{width:300px}
+  .acts{grid-template-columns:1fr}
+  .act-tabs{flex-direction:row;overflow-x:auto;padding-bottom:6px}
+  .act-tab{flex:none}
+  .char-stage-wrap{grid-template-columns:1fr}
+  .scene-grid{grid-template-columns:1fr}
+  .tech-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .film-stats{grid-template-columns:repeat(2,1fr)}
+  .timeline{padding-left:38px}
+  .step::before{left:-34px}
+  .nav-links{position:fixed;top:64px;right:14px;flex-direction:column;background:var(--paper);border-radius:18px;box-shadow:var(--shadow-lg);padding:12px;border:1.5px solid var(--line);display:none;min-width:180px}
+  .nav-links.open{display:flex}
+  .nav-toggle{display:block}
+}
+@media (max-width:560px){
+  .hero-title{letter-spacing:2px}
+  .char-card{padding:26px 22px}
+  .act-body{padding:22px 20px}
+  .act-progress{margin:0 20px 18px}
+  .step{padding:20px 18px}
+  .step-gallery{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= 导航 ================= -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#hero"><img src="assets/characters/toad/1.webp" alt="蛤蟆">蛤蟆的心灵归途</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#film">影片放映</a></li>
+      <li><a href="#story">故事四幕</a></li>
+      <li><a href="#characters">角色图鉴</a></li>
+      <li><a href="#scenes">场景画廊</a></li>
+      <li><a href="#storyboard">分镜手稿</a></li>
+      <li><a href="#process">制作历程</a></li>
+      <li><a href="#about">关于作品</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-left reveal in">
+      <div class="hero-badges">
+        <span class="badge-green">原创动画短片</span>
+        <span class="badge-yellow">Blender · 三渲二</span>
+        <span class="badge-purple">心理健康 · 治愈系</span>
+      </div>
+      <h1 class="hero-title">蛤蟆的<br><span class="hl">心灵归途</span></h1>
+      <div class="hero-en">The Soul Journey of the Toad</div>
+      <p class="hero-desc">一只自卑消沉的蛤蟆，在朋友的争吵与心理咨询师的引导中，学会<b>直面情绪、接纳自己</b>。全片以 Blender 三渲二技术制作，用色调的冷暖变化外化角色的心理成长，讲述一个关于<b>友谊、沟通与和解</b>的治愈故事。</p>
+      <div class="hero-meta">
+        <div class="m"><b>4'10"</b><span>片长</span></div>
+        <div class="m"><b>4</b><span>主要角色</span></div>
+        <div class="m"><b>4</b><span>核心场景</span></div>
+        <div class="m"><b>1080P</b><span>全高清</span></div>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#film">▶&nbsp; 观看影片</a>
+        <a class="btn btn-ghost" href="#characters">🐸 认识角色</a>
+      </div>
+    </div>
+    <div class="hero-stage reveal in d2" id="heroStage">
+      <img class="hero-sticker main" src="assets/characters/toad/1.webp" alt="蛤蟆立绘" id="heroMain">
+      <img class="hero-sticker badger" src="assets/characters/badger/1.webp" alt="獾立绘" id="heroBadger">
+      <img class="hero-sticker leaf" src="assets/characters/heron/2.webp" alt="">
+      <img class="hero-sticker leaf2" src="assets/characters/mole/3.webp" alt="">
+    </div>
+  </div>
+  <div class="scroll-hint">向下滚动探索</div>
+</section>
+
+<!-- ================= 影片 ================= -->
+<section id="film">
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" style="position:absolute;top:-1px;left:0;transform:rotate(180deg)"><path d="M0,30 C240,70 480,-10 720,30 C960,70 1200,-10 1440,30 L1440,0 L0,0 Z" fill="#eef3e6"/></svg>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">FILM · 影片放映</span>
+      <h2 class="sec-title">正片<em>欣赏</em></h2>
+      <p class="sec-sub">三渲二渲染 · 中配对白 · 剪辑合成一气呵成</p>
+    </div>
+    <div class="video-shell reveal d1">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV1WKNd65EnD&page=1&high_quality=1&danmaku=0&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" title="蛤蟆的心灵归途 正片"></iframe>
+    </div>
+    <p class="bili-tip">本片已入驻 📺 <a href="https://www.bilibili.com/video/BV1WKNd65EnD" target="_blank" rel="noopener">哔哩哔哩 ·《蛤蟆的心灵归途》</a>，欢迎前去三连支持！</p>
+    <div class="film-stats reveal d2">
+      <div class="fstat"><b>00:04:10</b><span>片长</span></div>
+      <div class="fstat"><b>Blender</b><span>制作软件</span></div>
+      <div class="fstat"><b>1920×1080</b><span>分辨率</span></div>
+      <div class="fstat"><b>三渲二</b><span>渲染风格</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 故事四幕 ================= -->
+<section id="story">
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" style="position:absolute;top:-1px;left:0"><path d="M0,30 C240,70 480,-10 720,30 C960,70 1200,-10 1440,30 L1440,0 L0,0 Z" fill="#1f3d2b"/></svg>
+  <div class="wrap" style="padding-top:30px">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">STORY · 故事四幕</span>
+      <h2 class="sec-title">跟着色调，<em>走进蛤蟆的内心</em></h2>
+    </div>
+    <p class="story-intro reveal d1">短片改编自心理学经典《蛤蟆先生去看心理医生》的世界观，按<b>「冲突 — 疏导 — 反思 — 和解」</b>四幕推进。随着蛤蟆心境的变化，画面色调从<b>压抑的冷紫</b>一步步走向<b>明亮的暖黄</b>——颜色，就是这部片子的心理语言。</p>
+    <div class="acts reveal d2">
+      <div class="act-tabs" id="actTabs">
+        <button class="act-tab active" data-act="0"><span class="num">壹</span><span class="t"><b>庄园客厅</b><span>争执 · 故事的开端</span></span></button>
+        <button class="act-tab" data-act="1"><span class="num">贰</span><span class="t"><b>心理咨询室</b><span>疏导 · 全片的核心</span></span></button>
+        <button class="act-tab" data-act="2"><span class="num">叁</span><span class="t"><b>河边小路</b><span>反思 · 朋友的转变</span></span></button>
+        <button class="act-tab" data-act="3"><span class="num">肆</span><span class="t"><b>庄园庭院</b><span>和解 · 温暖的结尾</span></span></button>
+      </div>
+      <div class="act-panel active" id="actPanel">
+        <div class="act-media"><img id="actImg" src="assets/scenes/scene1-livingroom.webp" alt="蛤蟆庄园客厅"><span class="act-tone tone-cold" id="actTone">❄ 冷紫色调 · 压抑紧绷</span></div>
+        <div class="act-body">
+          <h3 id="actTitle">第一幕 · 庄园客厅<small>朋友之间的争执</small></h3>
+          <p id="actText">开篇即冲突：獾严厉指责蛤蟆荒废庄园、生活消沉，甚至觉得他对不起去世的父母；鼹鼠急忙辩护，认为蛤蟆需要的是安慰而不是指责。争吵不断升级，长期压抑的蛤蟆终于喊出一声「够了」，夺门而出——客厅陷入死一般的寂静。</p>
+          <div class="act-psy"><b>心理关键词</b><span id="actPsy">长期压抑 · 自我否定 —— 低饱和冷紫色调烘托紧绷的家庭氛围</span></div>
+        </div>
+        <div class="act-progress"><i id="actBar"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 角色图鉴 ================= -->
+<section id="characters">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">CHARACTERS · 角色图鉴</span>
+      <h2 class="sec-title">庄园里的<em>四位朋友</em></h2>
+      <p class="sec-sub">圆润线条 · 治愈画风｜点击下方贴纸，收集角色的每一种表情</p>
+    </div>
+    <div class="char-tabs reveal d1" id="charTabs"></div>
+    <div class="char-stage-wrap reveal d2">
+      <div>
+        <div class="char-stage">
+          <img class="big" id="charBig" src="assets/characters/toad/1.webp" alt="角色立绘" data-zoom>
+          <div class="hint">点击贴纸切换 · 点击大图放大</div>
+        </div>
+        <div class="sticker-row" id="stickerRow"></div>
+      </div>
+      <div class="char-card">
+        <div class="role" id="charRole">主角 · THE PROTAGONIST</div>
+        <h3 id="charName">蛤蟆</h3>
+        <div class="en" id="charEn">Toad</div>
+        <div class="char-tags" id="charTags"></div>
+        <p id="charDesc"></p>
+        <div class="quote"><b>角色弧光</b><i id="charQuote"></i></div>
+      </div>
+    </div>
+    <div class="sheet-cta reveal d3">
+      <button class="btn btn-ghost" data-zoom-target="assets/characters/sheet.webp" data-cap="《蛤蟆的心灵归途》角色设定总览 · 三视图与配色板">📐 查看角色设定总览图（三视图 + 配色）</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 场景画廊 ================= -->
+<section id="scenes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">SCENES · 场景画廊</span>
+      <h2 class="sec-title">四个场景，<em>四种心境</em></h2>
+      <p class="sec-sub">点击卡片放大查看 · 每个场景都有专属的情绪色调</p>
+    </div>
+    <div class="scene-grid">
+      <div class="scene-card reveal d1" data-zoom-target="assets/scenes/scene1-livingroom.webp" data-cap="蛤蟆庄园客厅 · 冷紫色调 —— 凌乱的陈设诉说主角的消沉">
+        <div class="ph"><img loading="lazy" src="assets/scenes/scene1-livingroom.webp" alt="蛤蟆庄园客厅"></div>
+        <div class="scene-info"><div><h4>蛤蟆庄园客厅</h4><p>争执发生地 · 凌乱陈设表现消沉</p></div><span class="tone-chip tone-cold">冷紫</span></div>
+      </div>
+      <div class="scene-card reveal d2" data-zoom-target="assets/scenes/scene2-counseling.webp" data-cap="苍鹭心理咨询室 · 暖黄色调 —— 整洁明亮的空间承载疗愈对话">
+        <div class="ph"><img loading="lazy" src="assets/scenes/scene2-counseling.webp" alt="苍鹭心理咨询室"></div>
+        <div class="scene-info"><div><h4>苍鹭心理咨询室</h4><p>核心场景 · 整洁专业、安静松弛</p></div><span class="tone-chip tone-warm">暖黄</span></div>
+      </div>
+      <div class="scene-card reveal d3" data-zoom-target="assets/scenes/scene3-riverside.webp" data-cap="河边小路 · 冷暖中和 —— 开阔安静的自然，两位好友在此反思">
+        <div class="ph"><img loading="lazy" src="assets/scenes/scene3-riverside.webp" alt="河边小路"></div>
+        <div class="scene-info"><div><h4>河边小路</h4><p>过渡场景 · 獾与鼹鼠的自我反思</p></div><span class="tone-chip tone-mid">中和</span></div>
+      </div>
+      <div class="scene-card reveal d4" data-zoom-target="assets/scenes/scene4-courtyard.webp" data-cap="蛤蟆庄园庭院 · 明亮暖黄 —— 凉亭下三人和解，阳光洒满庭院">
+        <div class="ph"><img loading="lazy" src="assets/scenes/scene4-courtyard.webp" alt="蛤蟆庄园庭院"></div>
+        <div class="scene-info"><div><h4>蛤蟆庄园庭院</h4><p>结尾场景 · 生机勃勃的和解之地</p></div><span class="tone-chip tone-bright">暖亮</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 分镜手稿 ================= -->
+<section id="storyboard">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">STORYBOARD · 分镜手稿</span>
+      <h2 class="sec-title">铅笔下的<em>故事雏形</em></h2>
+    </div>
+  </div>
+  <div class="sb-scroll reveal d1" id="sbScroll">
+    <div class="sb-card" data-zoom-target="assets/storyboard/sb1.webp" data-cap="分镜版 1 · 庄园开场 — 争执与出走">
+      <img loading="lazy" src="assets/storyboard/sb1.webp" alt="分镜1"><div class="cap"><b>分镜 · 壹</b><span>庄园开场 · 争执与出走</span></div>
+    </div>
+    <div class="sb-card" data-zoom-target="assets/storyboard/sb2.webp" data-cap="分镜版 2 · 咨询室 — 疏导与倾诉">
+      <img loading="lazy" src="assets/storyboard/sb2.webp" alt="分镜2"><div class="cap"><b>分镜 · 贰</b><span>咨询室 · 疏导与倾诉</span></div>
+    </div>
+    <div class="sb-card" data-zoom-target="assets/storyboard/sb3.webp" data-cap="分镜版 3 · 河边小路 — 反思与愧疚">
+      <img loading="lazy" src="assets/storyboard/sb3.webp" alt="分镜3"><div class="cap"><b>分镜 · 叁</b><span>河边小路 · 反思与愧疚</span></div>
+    </div>
+    <div class="sb-card" data-zoom-target="assets/storyboard/sb4.webp" data-cap="分镜版 4 · 庭院 — 和解与新生">
+      <img loading="lazy" src="assets/storyboard/sb4.webp" alt="分镜4"><div class="cap"><b>分镜 · 肆</b><span>庭院 · 和解与新生</span></div>
+    </div>
+  </div>
+  <p class="sb-hint">← 左右拖动或滚动查看更多手稿，点击可放大（手稿原尺寸较小，敬请谅解）→</p>
+</section>
+
+<!-- ================= 制作历程 ================= -->
+<section id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">PROCESS · 制作历程</span>
+      <h2 class="sec-title">从思维导图到成片，<em>九步走完归途</em></h2>
+      <p class="sec-sub">全部流程均由作者独立完成 · 点击过程图可放大</p>
+    </div>
+    <div class="timeline">
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">1</span><div><h3>前期构思</h3><small>MINDMAP · 剧本创作</small></div></div>
+        <p>绘制思维导图明确各阶段分工；查阅心理健康科普视频与文献，让角色的心理变化真实可信；随后完成剧本创作，按「冲突—发展—和解」结构精简叙事，只保留矛盾、疏导、和解三条主线。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-mindmap.webp" data-cap="整体架构设计思维导图"><img loading="lazy" src="assets/process/fig-mindmap.webp" alt=""><figcaption>整体架构思维导图</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">2</span><div><h3>角色设计</h3><small>CHARACTER DESIGN</small></div></div>
+        <p>依据剧本性格设定设计四个卡通角色：圆润线条、无尖锐造型，通过体型、五官与小细节（眼镜、围巾等）区分身份性格，保证三渲二画风统一。角色模型线条圆润简洁，观众一眼就能读懂每个角色。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-toad-design.webp" data-cap="蛤蟆角色形象图"><img loading="lazy" src="assets/process/fig-toad-design.webp" alt=""><figcaption>蛤蟆形象</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-heron-design.webp" data-cap="苍鹭角色形象图"><img loading="lazy" src="assets/process/fig-heron-design.webp" alt=""><figcaption>苍鹭形象</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-badger-design.webp" data-cap="獾角色形象图"><img loading="lazy" src="assets/process/fig-badger-design.webp" alt=""><figcaption>獾形象</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-mole-design.webp" data-cap="鼹鼠角色形象图"><img loading="lazy" src="assets/process/fig-mole-design.webp" alt=""><figcaption>鼹鼠形象</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">3</span><div><h3>场景搭建</h3><small>SCENE MODELING</small></div></div>
+        <p>从大件到小件逐步搭建四个场景：客厅刻意摆得凌乱表现消沉；咨询室方正整洁、采光良好，凸显专业；河边小路简化植被保持开阔安静；庭院加入蘑菇与凉亭，一派生机。每个场景先出三视图与俯视图确认布局。</p>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">4</span><div><h3>角色建模</h3><small>MODELING</small></div></div>
+        <p>以立方体与球体为基础体块拼接头部、躯干与四肢，用环切和挤出塑形，再统一精简拓扑、删除多余面数，保证布线规整、避免绑定穿模，最后平滑边角。四个角色共用这套流程，效率与质量兼得。</p>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">5</span><div><h3>骨骼绑定与权重分配</h3><small>RIGGING &amp; WEIGHT</small></div></div>
+        <p>按生物结构搭建骨架并父子级绑定，逐部位绘制权重：鸟喙独立骨骼精确控制开合、每根手指独立弯曲、手臂与头部柔和过渡。绑完成后反复旋转拉动骨骼测试动作，微调至符合生物运动规律。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-weight-beak.webp" data-cap="鸟喙部分权重绘制"><img loading="lazy" src="assets/process/fig-weight-beak.webp" alt=""><figcaption>鸟喙权重</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-weight-fingers.webp" data-cap="手指部分权重绘制"><img loading="lazy" src="assets/process/fig-weight-fingers.webp" alt=""><figcaption>手指权重</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-weight-head.webp" data-cap="头部权重绘制"><img loading="lazy" src="assets/process/fig-weight-head.webp" alt=""><figcaption>头部权重</figcaption></figure>
+          <figure data-zoom-target="assets/process/tt19.webp" data-cap="蛤蟆绑定后测试动作"><img loading="lazy" src="assets/process/tt19.webp" alt=""><figcaption>蛤蟆 · 动作测试</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">6</span><div><h3>风格化渲染</h3><small>3D-TO-2D SHADING</small></div></div>
+        <p>三渲二核心：全场景模型统一使用「着色器转 RGB + 颜色渐变节点」，模拟手绘二维质感；再按剧情情绪分别调节色相、饱和度与光影——客厅冷紫压抑、咨询室暖黄松弛、河边冷暖中和、庭院明亮饱和。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-shader-nodes.webp" data-cap="着色器编辑节点图"><img loading="lazy" src="assets/process/fig-shader-nodes.webp" alt=""><figcaption>着色器节点</figcaption></figure>
+          <figure data-zoom-target="assets/scenes/scene1-livingroom.webp" data-cap="客厅渲染 · 冷紫"><img loading="lazy" src="assets/scenes/scene1-livingroom.webp" alt=""><figcaption>客厅 · 冷紫</figcaption></figure>
+          <figure data-zoom-target="assets/scenes/scene2-counseling.webp" data-cap="咨询室渲染 · 暖黄"><img loading="lazy" src="assets/scenes/scene2-counseling.webp" alt=""><figcaption>咨询室 · 暖黄</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">7</span><div><h3>镜头动画与关键帧</h3><small>CAMERA &amp; KEYFRAME</small></div></div>
+        <p>客厅场景布置四机位：主相机交代站位与空旷感，三个单人相机分别对准蛤蟆、獾、鼹鼠，随对白切换视角；并在情绪起伏处调整焦距——獾训斥时快速推近制造压迫感，蛤蟆独白时轻微呼吸感呈现忐忑。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-cam-main.webp" data-cap="主相机视角"><img loading="lazy" src="assets/process/fig-cam-main.webp" alt=""><figcaption>主相机视角</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-cam-toad.webp" data-cap="蛤蟆单人相机视角"><img loading="lazy" src="assets/process/fig-cam-toad.webp" alt=""><figcaption>蛤蟆机位</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-cam-badger.webp" data-cap="獾单人相机视角"><img loading="lazy" src="assets/process/fig-cam-badger.webp" alt=""><figcaption>獾机位</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">8</span><div><h3>蜡笔绘制</h3><small>GREASE PENCIL</small></div></div>
+        <p>三维模型难以表现细腻表情，因此使用 Blender 蜡笔逐帧手绘：蛤蟆说话时一张一合的口型、鼹鼠激动时蹙起的眉毛，全部逐帧画出；肢体运动造成的衣物穿模也用蜡笔手绘修补，不破坏原有动画节奏。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-gp-toad-face.webp" data-cap="蛤蟆表情绘制"><img loading="lazy" src="assets/process/fig-gp-toad-face.webp" alt=""><figcaption>蛤蟆口型绘制</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-gp-mole-face.webp" data-cap="鼹鼠表情绘制"><img loading="lazy" src="assets/process/fig-gp-mole-face.webp" alt=""><figcaption>鼹鼠眉毛绘制</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-gp-heron-cloth.webp" data-cap="苍鹭衣物绘制修补"><img loading="lazy" src="assets/process/fig-gp-heron-cloth.webp" alt=""><figcaption>苍鹭衣物修补</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-head"><span class="step-num">9</span><div><h3>配音与后期制作</h3><small>DUBBING &amp; EDITING</small></div></div>
+        <p>按角色性格挑选音色：苍鹭温和低沉、蛤蟆轻柔迟疑、獾洪亮有力、鼹鼠细腻绵软；在台词中加入停顿与语气词让配音有情绪。最后导入剪映，按场景氛围挑选配乐、压制字幕、绘制封面，反复调整音量过渡，合成成片。</p>
+        <div class="step-gallery">
+          <figure data-zoom-target="assets/process/fig-dub-lines.webp" data-cap="台词配音调试"><img loading="lazy" src="assets/process/fig-dub-lines.webp" alt=""><figcaption>台词配音调试</figcaption></figure>
+          <figure data-zoom-target="assets/process/fig-editing.webp" data-cap="剪辑过程"><img loading="lazy" src="assets/process/fig-editing.webp" alt=""><figcaption>剪辑合成</figcaption></figure>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= 技术特色 ================= -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">TECH · 技术特色</span>
+      <h2 class="sec-title">藏在画面里的<em>三个巧思</em></h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card reveal d1">
+        <div class="ic">🎨</div><div class="deco">🎨</div>
+        <h3>三渲二渲染</h3>
+        <span class="tag">着色器转 RGB · 颜色渐变节点</span>
+        <p>三维建模的效率 + 二维手绘的质感。通过「着色器转 RGB」配合「颜色渐变节点」简化光影、提纯色块，既保留手绘治愈风，又能自由调运镜与复用模型。</p>
+      </div>
+      <div class="tech-card reveal d2">
+        <div class="ic">✏️</div><div class="deco">✏️</div>
+        <h3>Blender 蜡笔</h3>
+        <span class="tag">逐帧手绘 · 表情补全</span>
+        <p>三维面部动态僵硬？用蜡笔逐帧画出角色说话的口型与蹙眉的瞬间，弥补关键帧动画的表情短板；衣物穿模也靠手绘轮廓修补，保住每一帧的完整。</p>
+      </div>
+      <div class="tech-card reveal d3">
+        <div class="ic">🌈</div><div class="deco">🌈</div>
+        <h3>色彩心理学</h3>
+        <span class="tag">冷紫 → 暖黄 · 情绪外化</span>
+        <p>色调即心境：冲突时的低饱和冷紫、咨询时的暖黄、反思时的冷暖中和、和解时的明亮暖黄。颜色层层递进，观众无需台词也能读懂蛤蟆的心理成长。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 关于 ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">ABOUT · 关于作品</span>
+      <h2 class="sec-title">谢谢你看完<em>这段归途</em></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal d1">
+        <h3>🌱 创作初衷</h3>
+        <p>心理健康话题近年备受关注，但市面上的科普内容多为文字或讲座视频，较为枯燥，也缺少面向年轻观众的形式。动画短片轻松的剧情与治愈的画风，能降低心理话题本身的沉重感，让人更容易看进去、产生共鸣。</p>
+        <p style="margin-top:12px">这部短片希望让观众「看见」情绪：通过角色的动作表情与场景色调的冷暖变化，把自卑、压抑、迷茫、释然直观地表现出来——别怕负面情绪，学会好好沟通，试着接纳自己。</p>
+        <p style="margin-top:12px">在技术上，作品以 Blender 三渲二完成全部制作，探索「三维效率 + 二维质感」的创作路径，也为同类风格动画提供了一套可参考的完整流程。</p>
+        <div class="about-links">
+          <a class="btn btn-light" href="https://3dshow.3ddl.net/app/jbbbbp" target="_blank" rel="noopener">🔗 3dshow 展示页</a>
+          <a class="btn btn-light" href="#film">▶ 再看一遍</a>
+        </div>
+      </div>
+      <div class="about-card reveal d2">
+        <h3>📊 作品数据</h3>
+        <div class="about-stats">
+          <div class="astat"><b>4'10"</b><span>成片时长</span></div>
+          <div class="astat"><b>4</b><span>主要角色</span></div>
+          <div class="astat"><b>4</b><span>核心场景</span></div>
+          <div class="astat"><b>9</b><span>制作环节</span></div>
+          <div class="astat"><b>26</b><span>过程图稿</span></div>
+          <div class="astat"><b>∞</b><span>治愈能量</span></div>
+        </div>
+        <p style="margin-top:18px;font-size:13.5px">如果这部小短片让你想起了谁，别忘了给彼此一个好好说话的机会。🐸💚</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>《蛤蟆的心灵归途》</b> The Soul Journey of the Toad · 基于 Blender 的三渲二动画短片 · © 2026 崔淯婷<br>
+  <span style="opacity:.6">愿每一颗疲惫的心，都能找到自己的归途 🐸</span>
+</footer>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="关闭">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="上一张">‹</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="下一张">›</button>
+</div>
+
+<button id="toTop" aria-label="返回顶部">↑</button>
+
+<script>
+/* ================= 数据 ================= */
+const CHARACTERS = [
+  {
+    id:'toad', name:'蛤蟆', en:'Toad', role:'主角 · THE PROTAGONIST',
+    img:n=>`assets/characters/toad/${n}.webp`, count:6,
+    tags:[['自卑 → 接纳','g'],['庄园主人','y'],['圆润矮小','p']],
+    desc:'身形矮小、线条饱满圆滑。长期活在朋友们的期待里，习惯自我怀疑、害怕犯错，觉得对不起去世的父母。在苍鹭的引导下，他第一次看清内心真正的渴望：被理解、被接纳，拥有做决定的权利。',
+    quote:'「学会独立，不再害怕犯错。」'
+  },
+  {
+    id:'heron', name:'苍鹭', en:'Heron', role:'心理咨询师 · THE COUNSELOR',
+    img:n=>`assets/characters/heron/${n}.webp`, count:5,
+    tags:[['沉稳理性','g'],['善于倾听','y'],['修长挺拔','p']],
+    desc:'身材修长端正，五官温和、眼神平静，没有一点攻击性。他以专业与耐心引导蛤蟆说出内心真实的想法，肯定他「敢于正视自己」，并告诉他：真正的友谊建立在平等尊重与充分沟通之上。',
+    quote:'「正视内心，就是成长的开始。」'
+  },
+  {
+    id:'badger', name:'獾', en:'Badger', role:'严师益友 · THE STRICT ELDER',
+    img:n=>`assets/characters/badger/${n}.webp`, count:7,
+    tags:[['严肃刻板','g'],['固执强势','y'],['宽厚硬朗','p']],
+    desc:'身形宽厚硬朗、体态挺拔、眼神锐利。信奉严苛的说教，指责蛤蟆懦弱、荒废庄园——「恨铁不成钢」的方式却深深伤害了朋友。河边的一夜反思后，他学会放下指责、倾听与尊重。',
+    quote:'「我只是想骂醒他，却把他伤得太深。」'
+  },
+  {
+    id:'mole', name:'鼹鼠', en:'Mole', role:'贴心伙伴 · THE CARING FRIEND',
+    img:n=>`assets/characters/mole/${n}.webp`, count:6,
+    tags:[['细腻体贴','g'],['缺乏边界','y'],['小巧圆润','p']],
+    desc:'造型小巧圆润、线条柔和，亲和力极强。出于善意习惯性包办一切，却从未问过蛤蟆想要什么——过度的关心也成了压力。最终他懂得：真正的陪伴，是给朋友留出做决定的空间。',
+    quote:'「以后，我会先听听你的想法。」'
+  }
+];
+
+const ACTS = [
+  {img:'assets/scenes/scene1-livingroom.webp', tone:'❄ 冷紫色调 · 压抑紧绷', toneCls:'tone-cold',
+   title:'第一幕 · 庄园客厅', sub:'朋友之间的争执',
+   text:'开篇即冲突：獾严厉指责蛤蟆荒废庄园、生活消沉，甚至觉得他对不起去世的父母；鼹鼠急忙辩护，认为蛤蟆需要的是安慰而不是指责。争吵不断升级，长期压抑的蛤蟆终于喊出一声「够了」，夺门而出——客厅陷入死一般的寂静。',
+   psy:'长期压抑 · 自我否定 —— 低饱和冷紫色调烘托紧绷的氛围'},
+  {img:'assets/scenes/scene2-counseling.webp', tone:'☀ 暖黄色调 · 安静松弛', toneCls:'tone-warm',
+   title:'第二幕 · 心理咨询室', sub:'全片核心 · 苍鹭与蛤蟆的对话',
+   text:'蛤蟆向苍鹭倾诉：鼹鼠总替他安排一切却从不问他想要什么，獾的责备让他觉得自己一无是处。在苍鹭的引导下，蛤蟆说出了绝望与愧疚，也第一次看清内心真正的渴望——被理解、被接纳，拥有做决定的权利，不再害怕犯错。',
+   psy:'从自我否定到正视内心 —— 暖黄光影消解压抑，营造疗愈氛围'},
+  {img:'assets/scenes/scene3-riverside.webp', tone:'🍃 冷暖中和 · 开阔安静', toneCls:'tone-mid',
+   title:'第三幕 · 河边小路', sub:'视角转向两位好友',
+   text:'蛤蟆接受咨询的同时，獾与鼹鼠静坐河边。獾开口问「我是不是做得太过分了」，鼹鼠也承认不该事事包办。严苛的指责与包办式的关怀，都不是正确的陪伴方式——这段反思让故事不再只围着蛤蟆一人转，人物关系更加真实立体。',
+   psy:'朋友的自我反思 —— 冷暖中和的过渡色调，为和解埋下伏笔'},
+  {img:'assets/scenes/scene4-courtyard.webp', tone:'🌸 明亮暖黄 · 生机勃勃', toneCls:'tone-bright',
+   title:'第四幕 · 庄园庭院', sub:'凉亭下的双向和解',
+   text:'三人在庭院凉亭下和解：鼹鼠道歉，獾承认错误，蛤蟆说出心愿——学会独立、坦诚相处、互相尊重，有事一起沟通。阳光洒满庭院，阴霾散去。平等、尊重与沟通，正是友谊最珍贵的三块基石。',
+   psy:'自我接纳与双向和解 —— 明亮暖黄与欢快配乐收束全片'}
+];
+
+/* ================= 工具 ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* ---------- 导航 ---------- */
+const nav=$('#nav'), navLinks=$('#navLinks');
+addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',scrollY>40);
+  $('#toTop').classList.toggle('show',scrollY>600);
+},{passive:true});
+$('#navToggle').onclick=()=>navLinks.classList.toggle('open');
+navLinks.addEventListener('click',e=>{if(e.target.tagName==='A')navLinks.classList.remove('open')});
+$('#toTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+/* 滚动高亮 */
+const secIds=['film','story','characters','scenes','storyboard','process','about'];
+const secObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      $$('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{rootMargin:'-35% 0px -55% 0px'});
+secIds.forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el)});
+
+/* ---------- 入场动画 ---------- */
+const revealObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObs.unobserve(e.target)}});
+},{threshold:.12});
+$$('.reveal,.step').forEach(el=>revealObs.observe(el));
+
+/* ---------- 视频播放 ---------- */
+/* 视频：B站嵌入播放器，无需JS控制 */
+
+/* ---------- 故事四幕 ---------- */
+let actIdx=0, actTimer=null, actBar=$('#actBar'), barAnim=null;
+function renderAct(i){
+  actIdx=i;
+  const a=ACTS[i];
+  $('#actImg').src=a.img;
+  const tone=$('#actTone');tone.textContent=a.tone;tone.className='act-tone '+a.toneCls;
+  $('#actTitle').innerHTML=`${a.title}<small>${a.sub}</small>`;
+  $('#actText').textContent=a.text;
+  $('#actPsy').textContent=a.psy;
+  $$('.act-tab').forEach((t,k)=>t.classList.toggle('active',k===i));
+  // 进度条动画
+  if(barAnim)cancelAnimationFrame(barAnim);
+  const T0=performance.now(),DUR=9000;actBar.style.width='0%';
+  (function tick(t){
+    if(!actTimer)return;
+    const p=Math.min((t-T0)/DUR,1);
+    actBar.style.width=(p*100)+'%';
+    if(p<1)barAnim=requestAnimationFrame(tick);
+    else nextAct();
+  })(T0);
+}
+function nextAct(){renderAct((actIdx+1)%ACTS.length)}
+function startActs(){if(!actTimer){actTimer=setInterval(()=>{},1e9);renderAct(0)}}
+$$('.act-tab').forEach((t,i)=>t.onclick=()=>{renderAct(i)});
+// 进入视口才开始轮播
+new IntersectionObserver((es,o)=>{
+  es.forEach(e=>{if(e.isIntersecting){startActs();o.disconnect()}})
+},{threshold:.3}).observe($('#story'));
+
+/* ---------- 角色图鉴 ---------- */
+let curChar=0, curSticker=1;
+const charTabs=$('#charTabs'), stickerRow=$('#stickerRow');
+CHARACTERS.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='char-tab'+(i===0?' active':'');
+  b.innerHTML=`<img src="${c.img(1)}" alt="${c.name}">${c.name}`;
+  b.onclick=()=>selectChar(i);
+  charTabs.appendChild(b);
+});
+function selectChar(i){
+  curChar=i;curSticker=1;
+  const c=CHARACTERS[i];
+  $$('.char-tab').forEach((t,k)=>t.classList.toggle('active',k===i));
+  $('#charRole').textContent=c.role;
+  $('#charName').textContent=c.name;
+  $('#charEn').textContent=c.en;
+  $('#charTags').innerHTML=c.tags.map(t=>`<span class="tag-${t[1]}">${t[0]}</span>`).join('');
+  $('#charDesc').textContent=c.desc;
+  $('#charQuote').textContent=c.quote;
+  const big=$('#charBig');
+  big.src=c.img(1);big.dataset.zoomTarget=c.img(1);big.dataset.cap=`《蛤蟆的心灵归途》角色贴纸 · ${c.name} ${c.en}`;
+  big.style.animation='none';void big.offsetWidth;big.style.animation='';
+  stickerRow.innerHTML='';
+  for(let n=1;n<=c.count;n++){
+    const s=document.createElement('button');
+    s.className=n===1?'active':'';
+    s.innerHTML=`<img src="${c.img(n)}" alt="${c.name}贴纸${n}" loading="lazy">`;
+    s.onclick=()=>{
+      curSticker=n;
+      [...stickerRow.children].forEach((x,k)=>x.classList.toggle('active',k===n-1));
+      big.src=c.img(n);big.dataset.zoomTarget=c.img(n);
+      big.style.animation='none';void big.offsetWidth;big.style.animation='';
+    };
+    stickerRow.appendChild(s);
+  }
+}
+selectChar(0);
+
+/* ---------- 灯箱 ---------- */
+const lb=$('#lightbox'),lbImg=$('#lbImg'),lbCap=$('#lbCap');
+let lbGroup=[],lbIdx=0;
+function openLB(src,cap,groupEl){
+  lbGroup=groupEl?[...groupEl.querySelectorAll('[data-zoom-target]')].map(f=>({src:f.dataset.zoomTarget,cap:f.dataset.cap||''})):[{src,cap:cap||''}];
+  lbIdx=Math.max(0,lbGroup.findIndex(g=>g.src===src));
+  showLB();lb.classList.add('open');document.body.style.overflow='hidden';
+}
+function showLB(){const g=lbGroup[lbIdx];if(!g)return;lbImg.src=g.src;lbCap.textContent=g.cap||''}
+function closeLB(){lb.classList.remove('open');document.body.style.overflow=''}
+$('#lbClose').onclick=closeLB;
+lb.onclick=e=>{if(e.target===lb)closeLB()};
+$('#lbPrev').onclick=()=>{lbIdx=(lbIdx-1+lbGroup.length)%lbGroup.length;showLB()};
+$('#lbNext').onclick=()=>{lbIdx=(lbIdx+1)%lbGroup.length;showLB()};
+addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLB();
+  if(e.key==='ArrowLeft')$('#lbPrev').click();
+  if(e.key==='ArrowRight')$('#lbNext').click();
+});
+/* 委托：所有带 data-zoom-target 的元素与角色大图 */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-zoom-target]');
+  if(!el)return;
+  const group=el.closest('.step,.scene-grid,.sb-scroll,.sheet-cta,.char-stage');
+  openLB(el.dataset.zoomTarget,el.dataset.cap,group);
+});
+
+/* ---------- 分镜横向滚动：滚轮 + 拖拽 ---------- */
+const sb=$('#sbScroll');
+sb.addEventListener('wheel',e=>{
+  if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
+    const max=sb.scrollWidth-sb.clientWidth;
+    const before=sb.scrollLeft;
+    sb.scrollLeft+=e.deltaY;
+    if(sb.scrollLeft>2&&sb.scrollLeft<max-2)e.preventDefault();
+  }
+},{passive:false});
+let drag=false,sx=0,sl=0,moved=false;
+sb.addEventListener('pointerdown',e=>{drag=true;moved=false;sx=e.clientX;sl=sb.scrollLeft;sb.classList.add('dragging')});
+addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const dx=e.clientX-sx;
+  if(Math.abs(dx)>6)moved=true;
+  sb.scrollLeft=sl-dx;
+});
+addEventListener('pointerup',()=>{drag=false;sb.classList.remove('dragging')});
+sb.addEventListener('click',e=>{if(moved){e.stopPropagation();e.preventDefault()}},true);
+
+/* ---------- Hero 视差 ---------- */
+const heroStage=$('#heroStage');
+if(matchMedia('(pointer:fine)').matches){
+  addEventListener('mousemove',e=>{
+    const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);
+    heroStage.querySelectorAll('.hero-sticker').forEach((s,i)=>{
+      const d=8+i*5;
+      s.style.translate=`${x*d}px ${y*d}px`;
+    });
+  });
+}
+</script>
+</body>
+</html>
